@@ -34,7 +34,7 @@ n_pos_doi <- nrow(dados_doi)
 
 #0.4 - Remoção de Duplicatas por Títulos Similares
 
-dados_final <- duplicatedMatching(dados_doi, Field = "TI", exact = FALSE, tol = 0.8)
+dados_final <- duplicatedMatching(dados_doi, Field = "TI", exact = FALSE, tol = 0.95)
 n_final <- nrow(dados_final)
 
 #0.5 - Mensagem de Duplicatas Removidas
