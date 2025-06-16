@@ -1,0 +1,51 @@
+# ------------------------------------------------------------------------------
+# Script parte do projeto "TIM-III-Scripts-Analise-Bibliometrica"
+# Disciplina: Trabalho Integralizador Multidisciplinar III (TIM III)
+# Curso: Engenharia Civil – Escola de Engenharia da UFMG
+#
+# Finalidade: Este script integra o projeto de sistematização de uma análise
+# bibliométrica, conduzida como parte das atividades acadêmicas da disciplina.
+#
+# Licença: Este repositório está licenciado sob a Creative Commons
+# Atribuição-NãoComercial 4.0 Internacional (CC BY-NC 4.0)
+# Consulte os termos em: https://creativecommons.org/licenses/by-nc/4.0/
+# ------------------------------------------------------------------------------
+
+#Passo 0 - Script para Remoção de Duplicatas
+
+#0.1 - Instalação e Carregamento do Pacote Bibliometrix e DataTables
+
+if(!require("bibliometrix")) install.packages("bibliometrix")
+library(bibliometrix)
+
+if (!require("DT")) install.packages("DT")
+library(DT)
+
+#0.2 - Importar Arquivo .txt da Base Web of Science
+
+arquivo<-file.choose()
+dados<-convert2df(file = arquivo, dbsource = "wos", format = "plaintext")
+
+#0.3 - Remoção de Duplicatas por DOI
+
+n_total <- nrow(dados)
+dados_doi<-dados[!duplicated(dados$DI),]
+n_pos_doi <- nrow(dados_doi)
+
+#0.4 - Remoção de Duplicatas por Títulos Similares
+
+dados_final <- duplicatedMatching(dados_doi, Field = "TI", exact = FALSE, tol = 0.8)
+n_final <- nrow(dados_final)
+
+#0.5 - Mensagem de Duplicatas Removidas
+
+cat("Total inicial:", n_total, "registros\n")
+cat("Total após remoção por DOI:", n_pos_doi, "\n")
+cat("Total após remoção por título semelhante:", n_final, "\n")
+cat("Duplicatas removidas:", n_total-n_final, "\n")
+
+#0.6 - Visualização pelo DataTables
+
+datatable(dados_final[, c("TI", "DE", "AB")],
+  options = list(pageLength = 10, scrollX = TRUE),
+  caption = "Artigos Sem Duplicatas – Título, Palavras-chave e Resumo")
