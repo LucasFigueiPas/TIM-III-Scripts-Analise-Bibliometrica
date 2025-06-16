@@ -1,0 +1,62 @@
+# ------------------------------------------------------------------------------
+# Script parte do projeto "TIM-III-Scripts-Analise-Bibliometrica"
+# Disciplina: Trabalho Integralizador Multidisciplinar III (TIM III)
+# Curso: Engenharia Civil – Escola de Engenharia da UFMG
+#
+# Finalidade: Este script integra o projeto de sistematização de uma análise
+# bibliométrica, conduzida como parte das atividades acadêmicas da disciplina.
+#
+# Licença: Este repositório está licenciado sob a Creative Commons
+# Atribuição-NãoComercial 4.0 Internacional (CC BY-NC 4.0)
+# Consulte os termos em: https://creativecommons.org/licenses/by-nc/4.0/
+# ------------------------------------------------------------------------------
+
+#Passo 0.1 - Script para Comparar Exportações da Web of Science
+
+#Carregar os Pacotes
+
+library(bibliometrix)
+
+#Seleção dos Arquivos .txt
+
+arquivo1 <- file.choose()
+arquivo2 <- file.choose()
+
+#Conversão para Dataframe
+
+dados1 <- convert2df(file = arquivo1, dbsource = "wos", format = "plaintext")
+dados2 <- convert2df(file = arquivo2, dbsource = "wos", format = "plaintext")
+
+#Remoção de Duplicatas por DOI
+
+dados1 <- dados1[!duplicated(dados1$DI), ]
+dados2 <- dados2[!duplicated(dados2$DI), ]
+
+#Remoção de Duplicatas por Título
+
+dados1 <- duplicatedMatching(dados1, Field = "TI", exact = FALSE, tol = 0.8)
+dados2 <- duplicatedMatching(dados2, Field = "TI", exact = FALSE, tol = 0.8)
+
+#Padronização de Títulos
+
+titulos1 <- trimws(tolower(dados1$TI))
+titulos2 <- trimws(tolower(dados2$TI))
+
+#Comparação de Títulos
+
+comuns <- intersect(titulos1, titulos2)
+somente_1 <- setdiff(titulos1, titulos2)
+somente_2 <- setdiff(titulos2, titulos1)
+
+#Exibição dos Resultados
+
+cat("\n Resultado da Comparação:\n")
+cat("Artigos e Reviews em comum:", length(comuns), "\n")
+cat("Artigos e Reviews Somente no arquivo 1:", length(somente_1), "\n")
+cat("Artigos e Reviews Somente no arquivo 2:", length(somente_2), "\n")
+
+#Exportar os Resultados em Formato .txt
+
+writeLines(comuns, "artigos_em_comum.txt")
+writeLines(somente_1, "artigos_somente_arquivo1.txt")
+writeLines(somente_2, "artigos_somente_arquivo2.txt")
