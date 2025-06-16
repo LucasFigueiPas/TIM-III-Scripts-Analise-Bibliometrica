@@ -8,5 +8,5 @@ O conteúdo está vinculado ao tema de pesquisa "Os conceitos de pobreza energé
 
 Os scripts disponibilizados foram desenvolvidos na linguagem R, utilizando principalmente o pacote bibliometrix, e destinam-se à condução de análises bibliométricas com dados extraídos da base Web of Science.
 
-Para mais detalhes sobre a licença, consulte o arquivo LICENSE.txt ou acesse:
+Para mais detalhes sobre a licença, consulte o arquivo [View License](LICENSE.txt) ou acesse:
 https://creativecommons.org/licenses/by-nc/4.0/
