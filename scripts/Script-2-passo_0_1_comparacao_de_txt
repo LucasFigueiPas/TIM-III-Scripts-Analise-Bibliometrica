@@ -34,8 +34,8 @@ dados2 <- dados2[!duplicated(dados2$DI), ]
 
 #Remoção de Duplicatas por Título
 
-dados1 <- duplicatedMatching(dados1, Field = "TI", exact = FALSE, tol = 0.8)
-dados2 <- duplicatedMatching(dados2, Field = "TI", exact = FALSE, tol = 0.8)
+dados1 <- duplicatedMatching(dados1, Field = "TI", exact = FALSE, tol = 0.95)
+dados2 <- duplicatedMatching(dados2, Field = "TI", exact = FALSE, tol = 0.95)
 
 #Padronização de Títulos
 
